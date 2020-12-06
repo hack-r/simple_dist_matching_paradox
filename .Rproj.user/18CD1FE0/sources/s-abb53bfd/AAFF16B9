@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1607285895167.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "AAFF16B9",
+    "lastKnownWriteTime" : 1607286013,
+    "last_content_update" : 1607286013718,
+    "path" : "~/PSM_research/simple_dist_matching_paradox/sim4/sim4_newdata.R",
+    "project_path" : "sim4/sim4_newdata.R",
+    "properties" : {
+        "cursorPosition" : "221,0",
+        "scrollLine" : "214"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1607285914426.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2728992688",
+    "id" : "960A11F8",
+    "lastKnownWriteTime" : 1607286037,
+    "last_content_update" : 1607286037618,
+    "path" : "~/PSM_research/simple_dist_matching_paradox/sim4/sim4_newdata_att_alty.R",
+    "project_path" : "sim4/sim4_newdata_att_alty.R",
+    "properties" : {
+        "cursorPosition" : "221,0",
+        "scrollLine" : "214"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

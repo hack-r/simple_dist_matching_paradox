@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1607285461136.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "1B7A6C2B",
+    "lastKnownWriteTime" : 1607285718,
+    "last_content_update" : 1607285718649,
+    "path" : "~/PSM_research/simple_dist_matching_paradox/eda_original_king_data/eda.R",
+    "project_path" : "eda_original_king_data/eda.R",
+    "properties" : {
+        "cursorPosition" : "70,0",
+        "scrollLine" : "62"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
