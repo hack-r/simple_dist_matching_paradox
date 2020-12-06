@@ -188,7 +188,7 @@ est.p <- apply(allPSM, 2, mean)
 
 pdf("../figs/sim5_true_psm_mdm_att_newdata_opts.pdf")
 plot(est.p, type="l", lwd=2, col="red", 
-     ylab="PSM vs MDM ATT across Pruning Levels", 
+     ylab="PSM (Options Enabled) vs MDM ATT", 
      xlab="Number of Units Pruned", xaxt="n",ylim=c(min(1,est.m,est.p),max(1,est.m,est.p)))
 axis(side=1,
      at=c(0, 20, 40, 60, 80),
@@ -214,7 +214,7 @@ est.p <- apply(allPSM, 2, mean)
 
 pdf("../figs/sim5_true_psm_mdm_mae_newdata_opts.pdf")
 plot(est.p, type="l", lwd=2, col="red", 
-     ylab="PSM (options enabled) vs MDM MAE", 
+     ylab="PSM (Options Enabled) vs MDM MAE", 
      xlab="Number of Units Pruned", xaxt="n",ylim=c(min(est.p,est.m),
                                                     max(est.p,est.m)))
 axis(side=1,
