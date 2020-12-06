@@ -1,6 +1,6 @@
 # Same as sim4, but now there are 2 subsegments with different treatment effects
 
-# Sim. #4: ATT for PSM and MDM + New Data + Alternate Y--------------------
+# Sim. #5: ATT for PSM and MDM --------------------
 
 sessionInfo()
 # R version 3.6.3 (2020-02-29)
@@ -31,7 +31,7 @@ sessionInfo()
 # loaded via a namespace (and not attached):
 #   [1] compiler_3.6.3 tools_3.6.3    packrat_0.5.0 
 
-setwd("~/PSM_research/simple_dist_matching_paradox/sim4")
+setwd("/home/serveradmin/PSM_research/variations_on_section5/sim5")
 
 #Load Functions
 source("aux_scripts/sim_functions.R")
@@ -72,7 +72,10 @@ for(z in 1:n){
   # The selection bias variable must be correlated with Y
   #   To simulate uneqal feature importance, leave b
   #     unrelated to Y
-  Y <- rnorm(n = 200, mean = ifelse(mydat$a > mean(mydat$a), 5, 10) + mydat$treat, sd=1) # add to mydat after PS logit
+  Y <- rnorm(n = 200, mean = ifelse(mydat$a > mean(mydat$a), 5, 10), sd=1) # add to mydat after PS logit
+
+  Y[mydat$a > mean(mydat$a)]  <- Y[mydat$a >  mean(mydat$a)] + 2*mydat$treat[mydat$a > mean(mydat$a)]
+  Y[mydat$a <= mean(mydat$a)] <- Y[mydat$a <= mean(mydat$a)] + 0.5*mydat$treat[mydat$a <= mean(mydat$a)]
   
   # Simulate a human selecting a model
   full.model <- glm("treat ~ a + b + c + d + e", data = mydat, family = binomial)
@@ -85,13 +88,7 @@ for(z in 1:n){
   final.model <- glm(form, data = mydat, family = binomial)
   summary(final.model)
   
-  # add Y, plotting features to data set
-  plotlab <- c(rep("C", 100), rep("T", 100))
-  plotcol <- c(rep("red", 100), rep("blue", 100))
-  
-  mydat$plotlab <- plotlab
-  mydat$plotcol <- plotcol
-  mydat$Y       <- Y
+  mydat$Y <- Y
   
   mydat$ps  <- fitted(glm(final.model$formula, family=binomial(link="logit"), data=mydat))
   
@@ -147,8 +144,8 @@ for(z in 1:n){
       pestmat[j,i] <- pestmat[1,i]
     }
   }
-  saveRDS(mestmat, paste("saved_objects/sim4_att_mdm_newdata_alty", z, ".rds", sep=""))
-  saveRDS(pestmat, paste("saved_objects/sim4_att_psm_newdata_alty", z, ".rds", sep=""))
+  saveRDS(mestmat, paste("saved_objects/sim5_att_mdm_newdata", z, ".rds", sep=""))
+  saveRDS(pestmat, paste("saved_objects/sim5_att_psm_newdata", z, ".rds", sep=""))
 }
 
 # Quick viz
@@ -172,8 +169,8 @@ n <- 100 # number of sims
 allMDM <- allPSM <- matrix(NA, nrow=n, ncol=85)
 
 for(j in 1:n){
-  mymdm <- readRDS(paste("saved_objects/sim4_att_mdm_newdata_alty", j, ".rds", sep=""))
-  mypsm <- readRDS(paste("saved_objects/sim4_att_psm_newdata_alty", j, ".rds", sep=""))
+  mymdm <- readRDS(paste("saved_objects/sim5_att_mdm_newdata", j, ".rds", sep=""))
+  mypsm <- readRDS(paste("saved_objects/sim5_att_psm_newdata", j, ".rds", sep=""))
   
   allPSM[j,] <- rev(apply(mypsm, 2, mean))	
   allMDM[j,] <- rev(apply(mymdm, 2, mean))
@@ -182,7 +179,7 @@ for(j in 1:n){
 est.m <- apply(allMDM, 2, mean)
 est.p <- apply(allPSM, 2, mean)
 
-pdf("../figs/sim4_true_psm_mdm_att_newdata_alty.pdf")
+pdf("../articles/figs/sim5_true_psm_mdm_att_newdata.pdf")
 plot(est.p, type="l", lwd=2, col="red", 
      ylab="PSM vs MDM ATT across Pruning Levels", 
      xlab="Number of Units Pruned", xaxt="n") #,ylim=c(0.9,2.3)
@@ -190,16 +187,16 @@ axis(side=1,
      at=c(0, 20, 40, 60, 80),
      labels=c(0, 40, 80, 120, 160))
 lines(est.m, type="l", lwd=2, col="black", lty=1)
-text(x=20, y=1.5, labels="MDM")
-text(x=20, y=1.2, labels="PSM")
-text(x=10, y=1.1, labels="True effect = 1")
+text(x=40, y=-0.25, labels="MDM")
+text(x=38, y=0.42, labels="PSM")
+text(x=10, y=1.05, labels="True effect = 1")
 abline(h=1,lty=2)
 dev.off()
 
 # MAE
 for(j in 1:n){
-  mymdm <- readRDS(paste("saved_objects/sim4_att_mdm_newdata_alty", j, ".rds", sep=""))
-  mypsm <- readRDS(paste("saved_objects/sim4_att_psm_newdata_alty", j, ".rds", sep=""))
+  mymdm <- readRDS(paste("saved_objects/sim5_att_mdm_newdata", j, ".rds", sep=""))
+  mypsm <- readRDS(paste("saved_objects/sim5_att_psm_newdata", j, ".rds", sep=""))
   
   allPSM[j,] <- rev(abs(1-apply(mypsm, 2, mean)))	
   allMDM[j,] <- rev(abs(1-apply(mymdm, 2, mean)))
@@ -208,7 +205,7 @@ for(j in 1:n){
 est.m <- apply(allMDM, 2, mean)
 est.p <- apply(allPSM, 2, mean)
 
-pdf("../figs/sim4_true_psm_mdm_mae_newdata_alty.pdf")
+pdf("../articles/figs/sim5_true_psm_mdm_mae_newdata.pdf")
 plot(est.p, type="l", lwd=2, col="red", 
      ylab="PSM vs MDM MAE across Pruning Levels", 
      xlab="Number of Units Pruned", xaxt="n") #,ylim=c(0.9,2.3)
@@ -216,6 +213,6 @@ axis(side=1,
      at=c(0, 20, 40, 60, 80),
      labels=c(0, 40, 80, 120, 160))
 lines(est.m, type="l", lwd=2, col="black", lty=1)
-text(x=60, y=0.5, labels="PSM")
-text(x=60, y=1, labels="MDM")
+text(x=20, y=1.3, labels="PSM")
+text(x=20, y=1.6, labels="MDM")
 dev.off()

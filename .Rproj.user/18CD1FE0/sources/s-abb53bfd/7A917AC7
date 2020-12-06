@@ -1,19 +1,19 @@
 {
     "collab_server" : "",
     "contents" : "",
-    "created" : 1607285733197.000,
+    "created" : 1607288466527.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
-    "id" : "35EE36AA",
-    "lastKnownWriteTime" : 1607286157,
-    "last_content_update" : 1607286157248,
+    "hash" : "463831381",
+    "id" : "7A917AC7",
+    "lastKnownWriteTime" : 1607288477,
+    "last_content_update" : 1607288477507,
     "path" : "~/PSM_research/simple_dist_matching_paradox/sim1/sim1.R",
     "project_path" : "sim1/sim1.R",
     "properties" : {
-        "cursorPosition" : "0,0",
-        "scrollLine" : "0"
+        "cursorPosition" : "23,51",
+        "scrollLine" : "15"
     },
     "read_only" : false,
     "read_only_alternatives" : [
