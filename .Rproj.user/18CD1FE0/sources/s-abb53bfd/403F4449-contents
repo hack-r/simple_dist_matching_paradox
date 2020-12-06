@@ -82,7 +82,7 @@ for(z in 1:n){
   full.model <- glm("treat ~ a + b + c + d + e", data = mydat, family = binomial)
   summary(full.model)
   
-  form <- capture.output(cat("treat ~ 1",intersect(names(coef(summary(full.model))[,4][coef(summary(full.model))[,4]<0.05]),c("a", "b", "c", "d", "e")),sep = "+"))
+  form <- capture.output(cat("treat ~ 1",intersect(names(coef(summary(full.model))[,4][coef(summary(full.model))[,4]<0.01]),c("a", "b", "c", "d", "e")),sep = "+"))
   if(substr(form,nchar(form),nchar(form))=="+") form <- "treat~1"
   form <- formula(form)
   
@@ -122,21 +122,23 @@ for(z in 1:n){
                           Tr       = mdat$treat,
                           X        = rep(0,nrow(mdat)),
                           estimand = "ATT",
-                          M        = 2, 
-                          ties     = T,
-                          replace  = T,
-                          CommonSupport = T
+                          M        = 1, 
+                          replace  = F,
+                          ties     = F
     )
     mestmat[1,i] <- effect$est
     
-    effect       <- Match(Y        = pdat$Y, 
-                          Tr       = pdat$treat,
-                          X        = pdat$ps,
-                          estimand = "ATT",
-                          M        = 2, 
-                          ties     = T,
-                          replace  = T,
-                          CommonSupport = T
+    # 2 to 1 matching in the tiny sample caliper, 3 to 1 when it's bigger
+    many_to_one  <- ifelse(i > 10, 3, 2)
+    effect       <- Match(Y          = pdat$Y, 
+                          Tr         = pdat$treat,
+                          X          = pdat$ps,
+                          estimand   = "ATT",
+                          M          = many_to_one, 
+                          replace    = T,
+                          BiasAdjust = T,
+                          ties       = T,
+                          caliper    = 0.1 # works better than just CommonSupport = T
     )
     pestmat[1,i] <- effect$est
     
@@ -154,12 +156,14 @@ for(z in 1:n){
 # Quick viz
 
 # Mean Estimate
-plot(rev(apply(mestmat,2,mean)),type="l", ylim=c(-2,3))
+plot(rev(apply(mestmat,2,mean)),type="l", ylim=c(min(mestmat,pestmat,1),
+                                                 max(mestmat,pestmat,1)))
 lines(rev(apply(pestmat,2,mean)),lty=1,col="red")
 abline(1,0,lty=2)
 
 # MAE
-plot(rev(abs(1-apply(pestmat,2,mean))),col="red", ylim=c(0,3.5)) 
+plot(rev(abs(1-apply(pestmat,2,mean))),col="red", ylim=c(min(1,abs(1-apply(mestmat,2,mean)),abs(1-apply(pestmat,2,mean))),
+                                                         max(1,abs(1-apply(mestmat,2,mean)),abs(1-apply(pestmat,2,mean))))) 
 lines(rev(abs(1-apply(mestmat,2,mean))),col="black")
 abline(0,0)
 
@@ -185,13 +189,13 @@ est.p <- apply(allPSM, 2, mean)
 pdf("../figs/sim5_true_psm_mdm_att_newdata_opts.pdf")
 plot(est.p, type="l", lwd=2, col="red", 
      ylab="PSM vs MDM ATT across Pruning Levels", 
-     xlab="Number of Units Pruned", xaxt="n",ylim=c(-1.6,1.5))
+     xlab="Number of Units Pruned", xaxt="n",ylim=c(min(1,est.m,est.p),max(1,est.m,est.p)))
 axis(side=1,
      at=c(0, 20, 40, 60, 80),
      labels=c(0, 40, 80, 120, 160))
 lines(est.m, type="l", lwd=2, col="black", lty=1)
-text(x=25, y=-1.25, labels="MDM")
-text(x=25, y=0.9, labels="PSM")
+text(x=25, y=-.575, labels="MDM")
+text(x=25, y=1.1, labels="PSM")
 text(x=10, y=0.9, labels="True effect = 1")
 abline(h=1,lty=2)
 dev.off()
@@ -210,12 +214,13 @@ est.p <- apply(allPSM, 2, mean)
 
 pdf("../figs/sim5_true_psm_mdm_mae_newdata_opts.pdf")
 plot(est.p, type="l", lwd=2, col="red", 
-     ylab="PSM vs MDM MAE across Pruning Levels", 
-     xlab="Number of Units Pruned", xaxt="n",ylim=c(0,2.6)) #,ylim=c(0,2.6)
+     ylab="PSM (options enabled) vs MDM MAE", 
+     xlab="Number of Units Pruned", xaxt="n",ylim=c(min(est.p,est.m),
+                                                    max(est.p,est.m)))
 axis(side=1,
      at=c(0, 20, 40, 60, 80),
      labels=c(0, 40, 80, 120, 160))
 lines(est.m, type="l", lwd=2, col="black", lty=1)
-text(x=40, y=0.25, labels="PSM")
-text(x=40, y=1.9, labels="MDM")
+text(x=40, y=0.5, labels="PSM")
+text(x=50, y=1.15, labels="MDM")
 dev.off()
