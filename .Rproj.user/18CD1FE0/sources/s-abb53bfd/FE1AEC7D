@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1607288769955.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "FE1AEC7D",
+    "lastKnownWriteTime" : 1607288781,
+    "last_content_update" : 1607288781058,
+    "path" : "~/PSM_research/simple_dist_matching_paradox/sim5/sim5.R",
+    "project_path" : "sim5/sim5.R",
+    "properties" : {
+        "cursorPosition" : "33,51",
+        "scrollLine" : "32"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
