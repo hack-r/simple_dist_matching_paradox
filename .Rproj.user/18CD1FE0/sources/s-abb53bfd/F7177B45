@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "1956976629",
     "id" : "F7177B45",
-    "lastKnownWriteTime" : 1607288625,
-    "last_content_update" : 1607288625988,
+    "lastKnownWriteTime" : 1607312289,
+    "last_content_update" : 1607312289505,
     "path" : "~/PSM_research/simple_dist_matching_paradox/sim2/sim2.R",
     "project_path" : "sim2/sim2.R",
     "properties" : {
-        "cursorPosition" : "22,51",
-        "scrollLine" : "0"
+        "cursorPosition" : "245,9",
+        "scrollLine" : "236"
     },
     "read_only" : false,
     "read_only_alternatives" : [

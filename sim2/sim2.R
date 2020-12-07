@@ -174,7 +174,7 @@ axis(side=1,
      at=c(0, 20, 40, 60, 80),
      labels=c(0, 40, 80, 120, 160))
 lines(var.p, type="l", lwd=2, col=rgb(red=1, green=0, blue=0, alpha=.7))
-text(x=20, y=0.02, labels="MDP-OLS")
+text(x=25, y=0.02, labels="MDP-OLS")
 text(x=20, y=0.003, labels="PSM")
 dev.off()
 
@@ -217,7 +217,7 @@ legend(x="topright",  c("PSM", "MDM Mean", "MDM Max", "MDM Min"), lty=c(1,3,1,2)
 abline(h=2,lty=2)
 dev.off()
 
-# ## Max Estimate
+### Max Estimate
 allMDM <- allPSM <- matrix(NA, nrow=n, ncol=85)
 
 for(j in 1:n){
@@ -228,19 +228,18 @@ for(j in 1:n){
   allPSM[j,] <- rev(apply(mypsm, 2, max))
 }
 
-# this is the estimate, they shouldn't still call it "var"
-var.m <- apply(allMDM, 2, mean)
-var.p <- apply(allPSM, 2, mean)
+est.m <- apply(allMDM, 2, mean)
+est.p <- apply(allPSM, 2, mean)
 
 pdf("../figs/sim2_true_psm_max_est_kingdata.pdf")
-plot(var.m, type="l", lwd=2, col="black",
+plot(est.m, type="l", lwd=2, col="black",
      ylab="Maximum Coefficient across 512 Specifications",
      xlab="Number of Units Pruned", xaxt="n")
 axis(side=1,
      at=c(0, 20, 40, 60, 80),
      labels=c(0, 40, 80, 120, 160))
-lines(var.p, type="l", lwd=2, col=rgb(red=1, green=0, blue=0, alpha=.7))
-text(x=40, y=2.3, labels="MDP-OLS")
+lines(est.p, type="l", lwd=2, col=rgb(red=1, green=0, blue=0, alpha=.7))
+text(x=42, y=2.3, labels="MDP-OLS")
 text(x=30, y=2.1, labels="PSM")
 text(x=10, y=2.1, labels="True effect = 2")
 abline(h=2,lty=2)
