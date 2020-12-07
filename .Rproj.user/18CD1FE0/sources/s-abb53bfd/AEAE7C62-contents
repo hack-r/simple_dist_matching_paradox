@@ -40,7 +40,7 @@ source("aux_scripts/matchingFunctions_20oct2014.R")
 require(Matching)
 
 # Run the simulations
-n <- 100 # Number of sims
+n <- 1 # Number of sims
 for(z in 1:n){
   print(paste("Beginning to make Data Set #", z, sep=""))
   
@@ -106,6 +106,9 @@ for(z in 1:n){
   #holder matrices
   mestmat <- pestmat <- matrix(NA, nrow=512, ncol=85)
   
+  #holder for match balance p-values
+  balance.results <- numeric(85)
+  
   #run the caliper
   for(i in 1:85){
     print(paste("caliper: ", i, sep=""))
@@ -129,7 +132,7 @@ for(z in 1:n){
     mestmat[1,i] <- effect$est
     
     # 2 to 1 matching in the tiny sample caliper, 3 to 1 when it's bigger
-    many_to_one  <- ifelse(i > 10, 3, 1)
+    many_to_one  <- ifelse(i > 10, 3, 2)
     adjustment   <- ifelse(i > 30, T, F)
     caliper      <- ifelse(i > 30, .05, .1)
     effect       <- Match(Y          = pdat$Y, 
@@ -145,14 +148,19 @@ for(z in 1:n){
     pestmat[1,i] <- effect$est
     
     #since the rest of the code assumes 512 rows we'll temporarily
-    #patch it like this. this can come out later.
+    #patch it like this. it could be removed, but has no effect.
     for(j in 2:512){
       mestmat[j,i] <- mestmat[1,i]
       pestmat[j,i] <- pestmat[1,i]
     }
+    
+    # Check the balance
+    mb                 <- MatchBalance(form, data = pdat, match.out = effect)
+    balance.results[i] <- mb$AfterMatching[[1]]$p.value 
   }
   saveRDS(mestmat, paste("saved_objects/sim5_att_mdm_newdata_opts", z, ".rds", sep=""))
   saveRDS(pestmat, paste("saved_objects/sim5_att_psm_newdata_opts", z, ".rds", sep=""))
+  saveRDS(balance.results, paste("saved_objects/sim5_att_psm_newdata_opts_balance_pvalues", z, ".rds", sep=""))
 }
 
 # Quick viz
@@ -211,18 +219,18 @@ for(j in 1:n){
   allMDM[j,] <- rev(abs(1-apply(mymdm, 2, mean)))
 }
 
-mae.m <- apply(allMDM, 2, mean)
-mae.p <- apply(allPSM, 2, mean)
+est.m <- apply(allMDM, 2, mean)
+est.p <- apply(allPSM, 2, mean)
 
 pdf("../figs/sim5_true_psm_mdm_mae_newdata_opts.pdf")
-plot(mae.p, type="l", lwd=2, col="red", 
+plot(est.p, type="l", lwd=2, col="red", 
      ylab="PSM (Options Enabled) vs MDM MAE", 
-     xlab="Number of Units Pruned", xaxt="n",ylim=c(min(mae.p,mae.m),
-                                                    max(mae.p,mae.m)))
+     xlab="Number of Units Pruned", xaxt="n",ylim=c(min(est.p,est.m),
+                                                    max(est.p,est.m)))
 axis(side=1,
      at=c(0, 20, 40, 60, 80),
      labels=c(0, 40, 80, 120, 160))
-lines(mae.m, type="l", lwd=2, col="black", lty=1)
+lines(est.m, type="l", lwd=2, col="black", lty=1)
 text(x=40, y=0.5, labels="PSM")
 text(x=50, y=1.15, labels="MDM")
 dev.off()

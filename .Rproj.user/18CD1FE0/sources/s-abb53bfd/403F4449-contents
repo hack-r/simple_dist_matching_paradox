@@ -129,16 +129,18 @@ for(z in 1:n){
     mestmat[1,i] <- effect$est
     
     # 2 to 1 matching in the tiny sample caliper, 3 to 1 when it's bigger
-    many_to_one  <- ifelse(i > 10, 3, 2)
+    many_to_one  <- ifelse(i > 10, 3, 1)
+    adjustment   <- ifelse(i > 30, T, F)
+    caliper      <- ifelse(i > 30, .05, .1)
     effect       <- Match(Y          = pdat$Y, 
                           Tr         = pdat$treat,
                           X          = pdat$ps,
                           estimand   = "ATT",
                           M          = many_to_one, 
                           replace    = T,
-                          BiasAdjust = T,
+                          BiasAdjust = adjustment,
                           ties       = T,
-                          caliper    = 0.1 # works better than just CommonSupport = T
+                          caliper    = caliper # works better than just CommonSupport = T
     )
     pestmat[1,i] <- effect$est
     
@@ -209,18 +211,18 @@ for(j in 1:n){
   allMDM[j,] <- rev(abs(1-apply(mymdm, 2, mean)))
 }
 
-est.m <- apply(allMDM, 2, mean)
-est.p <- apply(allPSM, 2, mean)
+mae.m <- apply(allMDM, 2, mean)
+mae.p <- apply(allPSM, 2, mean)
 
 pdf("../figs/sim5_true_psm_mdm_mae_newdata_opts.pdf")
-plot(est.p, type="l", lwd=2, col="red", 
+plot(mae.p, type="l", lwd=2, col="red", 
      ylab="PSM (Options Enabled) vs MDM MAE", 
-     xlab="Number of Units Pruned", xaxt="n",ylim=c(min(est.p,est.m),
-                                                    max(est.p,est.m)))
+     xlab="Number of Units Pruned", xaxt="n",ylim=c(min(mae.p,mae.m),
+                                                    max(mae.p,mae.m)))
 axis(side=1,
      at=c(0, 20, 40, 60, 80),
      labels=c(0, 40, 80, 120, 160))
-lines(est.m, type="l", lwd=2, col="black", lty=1)
+lines(mae.m, type="l", lwd=2, col="black", lty=1)
 text(x=40, y=0.5, labels="PSM")
 text(x=50, y=1.15, labels="MDM")
 dev.off()
