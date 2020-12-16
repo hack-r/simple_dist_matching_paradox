@@ -9,5 +9,7 @@ found to outperform Mahalanobis Distance Matching (MDM) when assumptions
 underlying the simulations' data generating process were altered to make 
 them more reflective of real-world conditions in observational research.
 
+
 Jason Miller
+
 Submitted to Econometrica on Dec 12, 2020
