@@ -181,8 +181,6 @@ dev.off()
 #### bias plots (Estimates)
 # Since PSM will be the same (max,mean,min) - 1 plot for all 3 
 #   makes sense this time 
-
-## Max Estimate
 allMDM.max <- allMDM.min <- allMDM.mean <- allPSM <- matrix(NA, nrow=n, ncol=85)
 
 for(j in 1:n){
@@ -203,7 +201,7 @@ est.p      <- apply(allPSM, 2, mean)
 
 pdf("../figs/sim2_true_psm_allest_kingdata.pdf")
 plot(est.p, type="l", lwd=2, col="red", 
-     ylab="PSM vs Max, Mean, and Min MDM Coef.s", 
+     ylab="PSM vs Max, Mean, and Min MDP-OLS Coef.s", 
      xlab="Number of Units Pruned", xaxt="n",ylim=c(1.7,4))
 axis(side=1,
      at=c(0, 20, 40, 60, 80),
@@ -212,7 +210,7 @@ lines(est.m.mean, type="l", lwd=2, col="black", lty=3)
 lines(est.m.min, type="l", lwd=2, col="black", lty=2)
 lines(est.m.max, type="l", lwd=2, col="black", lty=1)
 text(x=20, y=2.1, labels="True effect = 2")
-legend(x="topright",  c("PSM", "MDM Mean", "MDM Max", "MDM Min"), lty=c(1,3,1,2),
+legend(x="topright",  c("PSM", "MDP-OLS Mean", "MDP-OLS Max", "MDP-OLS Min"), lty=c(1,3,1,2),
        col=c("red","black","black","black"),cex=0.5,inset = c(0, 0),y.intersp=0.25)
 abline(h=2,lty=2)
 dev.off()
@@ -245,7 +243,7 @@ text(x=10, y=2.1, labels="True effect = 2")
 abline(h=2,lty=2)
 dev.off()
 
-## MSE - PSM (invariant) vs MDM Max Estimator
+## MSE - PSM (invariant) vs MDP-OLS Max Estimator
 # Follows Rich Nielsen's approach
 allMDM <- allPSM <- matrix(NA, nrow=n, ncol=85)
 
@@ -268,6 +266,6 @@ axis(side=1,
      at=c(0, 20, 40, 60, 80),
      labels=c(0, 40, 80, 120, 160))
 lines(mse.p, type="l", lwd=2, col=rgb(red=1, green=0, blue=0, alpha=.7))
-text(x=20, y=1, labels="MDP-OLS")
+text(x=24, y=1, labels="MDP-OLS")
 text(x=20, y=0.3, labels="PSM")
 dev.off()

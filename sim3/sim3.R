@@ -251,7 +251,7 @@ est.p      <- apply(allPSM, 2, mean)
 
 pdf("../figs/sim3_true_psm_allest_newdata.pdf")
 plot(est.p, type="l", lwd=2, col="red", 
-     ylab="PSM vs Max, Mean, and Min MDM Coefficients", 
+     ylab="PSM vs Max, Mean, and Min MDP-OLS Coefficients", 
      xlab="Number of Units Pruned", xaxt="n",ylim=c(min(est.m.max,est.m.min,est.m.mean,est.p),
                                                     max(est.m.max,est.m.min,est.m.mean,est.p)))
 axis(side=1,
@@ -262,9 +262,10 @@ lines(est.m.min, type="l", lwd=2, col="black", lty=2)
 lines(est.m.max, type="l", lwd=2, col="black", lty=1)
 text(x=7, y=0.95, labels="True effect = 1")
 abline(h=1,lty=2)
-legend("top",  c("PSM",  "MDP-OLS Max", "MDP-OLS Mean", "MDP-OLS Min"), lty=c(1,1,3,2), #x=60,y=1.7,
-       col=c("red","black","black","black"),#cex=0.75,
-       bg="transparent",bty = "n") #y.intersp=0.15,
+legend("top",  c("PSM",  "MDP-OLS Max", "MDP-OLS Mean", "MDP-OLS Min"), lty=c(1,1,3,2), 
+       col=c("red","black","black","black"),
+       bg="transparent",bty = "n")
+       # Legend looks bad in viewer but correct in pdf
 dev.off()
 
 #### Plot of Y x a, segment, treatment v. control
