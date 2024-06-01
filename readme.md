@@ -1,3 +1,5 @@
+This is a draft from long ago. I shared it at that time and, if it's the version I'm thinking of, it was redirected to Policy Analysis. I simultaneously took a job that prevented me from pursuing its publication further.
+
 Working Title: "Propensity Scores Should Be Used for Matching to Avoid the Paradox of Simple Distance Methods"
 
 The use of Propensity Score Matching (PSM) was re-examined in light of 
